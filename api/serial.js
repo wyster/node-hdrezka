@@ -42,7 +42,7 @@ async function parseSerial(url, translator_id, _callback) {
                 translator_id : translator_id
             }
         }
-        client.post(`/ajax/get_cdn_series/?t=${Date.now()}`, options).then((response) => {
+        http.HDRezkaClient.post(`/ajax/get_cdn_series/?t=${Date.now()}`, options).then((response) => {
             parseSeasons(response.body['seasons'], (result) => {
                 seasons = result
             })

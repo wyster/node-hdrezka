@@ -12,14 +12,15 @@ async function routes (fastify, options) {
         api.parseDetails(url, (result) => reply.send(result))
     })
     fastify.get('/serial', (request, reply) => {
-        var url = request.query.url
-        api.parseSerial(url, (result) => reply.send(result))
+        var url = request.query.url,
+            translator_id = request.query.translator_id
+        api.parseSerial(url, translator_id, (result) => reply.send(result))
     })
     fastify.get('/player/prepared-uri', (request, reply) => {
-        var url     = request.query.url,
+        var uri     = request.query.uri,
             season  = request.query.season,
             episode = request.query.episode
-        api.preparePlayer(url, season, episode, (result) => reply.send(result))
+        api.preparePlayer(uri, season, episode, (result) => reply.send(result))
     })
     fastify.get('/player/hls', (request, reply) => {
 
