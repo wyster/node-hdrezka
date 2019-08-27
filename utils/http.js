@@ -1,16 +1,16 @@
 const got = require('got')
 
 const HDRezkaClient = got.extend({
-	baseUrl: process.env.HOST,
+	baseUrl: process.env.HTTP_HDREZKA_HOST,
 	headers: {
-        'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0',
-		'Referer'    : 'http://hdrezka.loan'
+        'User-Agent' : process.env.HTTP_HEADERS,
+		'Referer'    : process.env.HTTP_HDREZKA_HOST
 	}
 });
 
 const DefaultClient = got.extend({
 	headers: {
-        'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0'
+        'User-Agent' : process.env.HTTP_HEADERS
 	}
 });
 
