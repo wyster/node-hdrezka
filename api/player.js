@@ -1,8 +1,8 @@
-const $ = require('cheerio')
+const $ = require("cheerio")
 
 async function parseURI(HTML, _callback) {
-    let playerUri = $(HTML).find('iframe#cdn-player').attr('src')
-    playerUri = playerUri.substring(0, playerUri.indexOf('?pid'))
+    let playerUri = $(HTML).find("iframe#cdn-player").attr("src")
+    playerUri = playerUri.substring(0, playerUri.indexOf("?pid"))
     _callback(playerUri)
 }
 

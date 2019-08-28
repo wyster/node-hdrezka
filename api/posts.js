@@ -1,15 +1,15 @@
-const http = require('../utils/http')
-const $ = require('cheerio')
+const http = require("../utils/http")
+const $ = require("cheerio")
 
 async function parsePosts(type, page, filter, _callback) {
-    var posts = [],
-        result = {}
+    let posts = []
+    let result = {}
     http.HDRezkaClient.get(`/${type}/page/${[page]}/?filter=${filter}`).then((response) => {
-        $('div.b-content__inline_items', response.body).children().each((_, element) => {
-            let data_url = $(element).attr('data-url')
-            let img = $(element).find('.b-content__inline_item-cover a img').attr('src')
-            let title = $(element).find('.b-content__inline_item-link a').text()
-            let subtitle = $(element).find('.b-content__inline_item-link div').text()
+        $("div.b-content__inline_items", response.body).children().each((_, element) => {
+            let data_url = $(element).attr("data-url")
+            let img = $(element).find(".b-content__inline_item-cover a img").attr("src")
+            let title = $(element).find(".b-content__inline_item-link a").text()
+            let subtitle = $(element).find(".b-content__inline_item-link div").text()
             img = process.env.HTTP_HDREZKA_HOST + img
             posts.push({
                 data_url  : data_url,
@@ -19,7 +19,7 @@ async function parsePosts(type, page, filter, _callback) {
             })
         })
         posts.pop()
-        result['posts'] = posts
+        result["posts"] = posts
         _callback(result)
     })
 }
