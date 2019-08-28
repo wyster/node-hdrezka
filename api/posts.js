@@ -12,7 +12,7 @@ async function parsePosts(type, page, filter, _callback) {
             let subtitle = $(element).find(".b-content__inline_item-link div").text()
             img = process.env.HTTP_HDREZKA_HOST + img
             posts.push({
-                data_url  : data_url,
+                data_url : data_url,
                 img      : img,
                 title    : title,
                 subtitle : subtitle
