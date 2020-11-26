@@ -83,9 +83,9 @@ async function parseDetails (id) {
       }
 
       if (translators.length == 0 && !isSerial) {
-        player.parseURI(response.body, (uri) => {
+        /*player.parseURI(response.body, (uri) => {
           playerUri = uri
-        })
+        })*/
       }
 
       details = {

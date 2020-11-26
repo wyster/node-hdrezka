@@ -4,6 +4,7 @@ const fastify = require("fastify")({
 })
 config.load()
 
+fastify.register(require('fastify-cors'))
 fastify.register(require("./routes"))
 
 fastify.listen(process.env.API_PORT, process.env.API_HOST, (err, address) => {

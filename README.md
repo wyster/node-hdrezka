@@ -31,4 +31,5 @@ curl -X GET 'http://localhost:8080/search?q=hello'
 Get id from url
 ```
 curl -X GET 'http://localhost:8080/id-from-url?url=https://rezka.ag/films/drama/34749-chuzhie-2019.html'
+curl -X GET 'http://localhost:8080/id-from-url?url=https://rezka.ag/series/drama/78-fors-mazhory.html'
 ```
