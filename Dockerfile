@@ -1,4 +1,5 @@
-FROM node:14-slim
+ARG NODE_VERSION=14
+FROM node:${NODE_VERSION}-slim
 
 COPY . /app
 WORKDIR /app
