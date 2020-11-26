@@ -1,6 +1,11 @@
 const posts = require("./posts")
 const details = require("./details")
 const serial = require("./serial")
-const player = require("./player")
+const movie = require("./movie");
 
-module.exports = { parsePosts: posts, parseDetails: details, parseSerial: serial, preparePlayer: player.prepareURI }
+module.exports = {
+  posts,
+  details,
+  serial,
+  movie
+}

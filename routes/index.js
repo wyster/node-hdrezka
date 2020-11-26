@@ -5,28 +5,27 @@ async function routes (fastify, options) {
         let type   = request.query.type
         let page   = request.query.page
         let filter = request.query.filter
-        api.parsePosts(type, page, filter, (result) => reply.send(result))
+        api.posts(type, page, filter, (result) => reply.send(result))
     })
     fastify.get("/details", (request, reply) => {
         let url = request.query.url
-        api.parseDetails(url, (result) => reply.send(result))
+        api.details(url, (result) => reply.send(result))
     })
-    fastify.get("/serial", (request, reply) => {
-        let url = request.query.url
-        let translator_id = request.query.translator_id
-        api.parseSerial(url, translator_id, (result) => reply.send(result))
+    fastify.get("/movie/player", async (request, reply) => {
+        const result = await api.movie.getPlayer({id, translator_id} = request.query);
+        reply.send(result);
     })
-    fastify.get("/player/prepared-uri", (request, reply) => {
-        let uri     = request.query.uri
-        let season  = request.query.season
-        let episode = request.query.episode
-        api.preparePlayer(uri, season, episode, (result) => reply.send(result))
+    fastify.get("/serial", async (request, reply) => {
+        const result = await api.serial.getInfo({url} = request.query);
+        reply.send(result);
     })
-    fastify.get("/player/hls", (request, reply) => {
-
+    fastify.get("/serial/player", async (request, reply) => {
+        const result = await api.serial.getPlayer({id, translator_id, episode, season} = request.query);
+        reply.send(result);
     })
-    fastify.get("/player/dash", (request, reply) => {
-
+    fastify.get("/serial/episodes", async (request, reply) => {
+        const result = await api.serial.getEpisodes({id, translator_id} = request.query);
+        reply.send(result);
     })
 }
 
