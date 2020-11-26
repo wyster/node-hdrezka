@@ -1,6 +1,7 @@
 const http = require('../utils/http')
 const $ = require('cheerio')
-const { parseUri } = require('./helper')
+const { parseUri } = require('../utils/helper')
+const FormData = require('form-data')
 
 async function parseSeasons ($seasons, _callback) {
   let seasons = []
@@ -25,9 +26,9 @@ async function parseEpisodes ($episodes, _callback) {
   _callback(episodes)
 }
 
-async function getInfo ({ url }, _callback) {
+async function getInfo ({ id }, _callback) {
   return new Promise(async (resolve, reject) => {
-    const response = await http.DefaultClient.get(url)
+    const response = await http.HDRezkaClient.get(`${id}-.html`)
     const $body = $(response.body)
 
     resolve({
@@ -50,18 +51,21 @@ function prepareTranslators ($body) {
 
 function getPlayer ({ id, translator_id, episode, season }) {
   return new Promise(async (resolve, reject) => {
-    let options = {
-      json: true,
-      form: true,
-      body: {
-        id: parseInt(id),
-        translator_id: parseInt(translator_id),
-        action: 'get_stream',
-        episode: parseInt(episode),
-        season: parseInt(season)
-      }
+    const data = {
+      id: parseInt(id),
+      translator_id: parseInt(translator_id),
+      action: 'get_stream',
+      episode: parseInt(episode),
+      season: parseInt(season)
     }
-    const response = await http.HDRezkaClient.post(`/ajax/get_cdn_series/?t=${Date.now()}`, options)
+    const formData = new FormData()
+    Object.entries(data).forEach(item => {
+      formData.append(item[0], item[1])
+    })
+    const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
+      body: formData,
+      responseType: 'json'
+    })
     if (!response.body.success) {
       return reject(response.body.message)
     }
@@ -73,38 +77,40 @@ function getPlayer ({ id, translator_id, episode, season }) {
 }
 
 function getEpisodes ({ id, translator_id }) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let seasons = []
     let episodes = []
     let media = []
 
-    let options = {
-      json: true,
-      form: true,
-      body: {
-        id: parseInt(id),
-        translator_id: parseInt(translator_id),
-        action: 'get_episodes',
-      }
+    const data = {
+      id: parseInt(id),
+      translator_id: parseInt(translator_id),
+      action: 'get_episodes'
     }
-    http.HDRezkaClient.post(`/ajax/get_cdn_series/?t=${Date.now()}`, options).then((response) => {
-      if (!response.body.success) {
-        return reject(response.body.message)
-      }
-      parseSeasons($(response.body['seasons']), (result) => {
-        seasons = result
-      })
-      parseEpisodes($(response.body['episodes']), (result) => {
-        episodes = result
-      })
-
-      media = {
-        seasons: seasons,
-        episodes: episodes
-      }
-
-      resolve(media)
+    const formData = new FormData()
+    Object.entries(data).forEach(item => {
+      formData.append(item[0], item[1])
     })
+    const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
+      body: formData,
+      responseType: 'json'
+    })
+    if (!response.body.success) {
+      return reject(response.body.message)
+    }
+    parseSeasons($(response.body['seasons']), (result) => {
+      seasons = result
+    })
+    parseEpisodes($(response.body['episodes']), (result) => {
+      episodes = result
+    })
+
+    media = {
+      seasons: seasons,
+      episodes: episodes
+    }
+
+    resolve(media)
   })
 }
 

@@ -1,11 +1,11 @@
 const posts = require("./posts")
 const details = require("./details")
 const serial = require("./serial")
-const movie = require("./movie");
+const film = require("./film");
 
 module.exports = {
   posts,
   details,
   serial,
-  movie
+  film
 }
