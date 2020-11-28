@@ -4,7 +4,7 @@ const player = require('./player')
 const FormData = require('form-data')
 
 async function parseDetails (id) {
-  return new Promise(resolve => {
+  return new Promise(async (resolve, reject) => {
     let details = {}
     let rating = []
     let translators = []
@@ -19,7 +19,8 @@ async function parseDetails (id) {
     let playerUri = null
     let isSerial = false
 
-    http.HDRezkaClient.get(`${id}-.html`).then((response) => {
+    try {
+      const response = await http.HDRezkaClient.get(`${id}-.html`).catch(e => { throw e})
 
       $(response.body).find('table.b-post__info tbody').children().each((_, post_info) => {
         let info_key = $(post_info).find('td.l h2').text()
@@ -104,7 +105,9 @@ async function parseDetails (id) {
       }
 
       resolve(details)
-    })
+    } catch (e) {
+      return reject(e)
+    }
   })
 }
 
@@ -115,7 +118,7 @@ function search (q) {
     const options = {
       body: formData
     }
-    const response = await http.HDRezkaClient.post('engine/ajax/search.php', options)
+    const response = await http.HDRezkaClient.post('engine/ajax/search.php', options).catch(e => { throw e })
 
     const $body = $(response.body)
     const results = []

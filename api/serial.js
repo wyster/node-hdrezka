@@ -28,11 +28,11 @@ async function parseEpisodes ($episodes, _callback) {
 
 async function getInfo ({ id }, _callback) {
   return new Promise(async (resolve, reject) => {
-    const response = await http.HDRezkaClient.get(`${id}-.html`)
+    const response = await http.HDRezkaClient.get(`${id}-.html`).catch(e => { throw e })
     const $body = $(response.body)
 
     resolve({
-      translators: await prepareTranslators($body)
+      translators: await prepareTranslators($body).catch(e => { throw e })
     })
   })
 }
@@ -65,7 +65,7 @@ function getPlayer ({ id, translator_id, episode, season }) {
     const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
       body: formData,
       responseType: 'json'
-    })
+    }).catch(e => { throw e })
     if (!response.body.success) {
       return reject(response.body.message)
     }
@@ -94,7 +94,7 @@ function getEpisodes ({ id, translator_id }) {
     const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
       body: formData,
       responseType: 'json'
-    })
+    }).catch(e => { throw e })
     if (!response.body.success) {
       return reject(response.body.message)
     }

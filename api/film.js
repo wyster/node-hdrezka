@@ -9,7 +9,7 @@ function getPlayer ({ id, translator_id }) {
     formData.append('translator_id', parseInt(translator_id))
     formData.append('action', 'get_movie');
 
-    const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, { body: formData, responseType: 'json' });
+    const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, { body: formData, responseType: 'json' }).catch(e => { reject(e) });
     if (!response.body.success) {
       return reject(response.body.message)
     }
