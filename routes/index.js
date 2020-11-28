@@ -1,10 +1,10 @@
-const Sentry = require("@sentry/node");
+const Sentry = require('@sentry/node')
 const api = require('../api')
 const { getIdFromUrl } = require('../utils/helper')
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN
-});
+})
 
 async function routes (fastify) {
   fastify.get('/posts', (request, reply) => {
@@ -18,6 +18,7 @@ async function routes (fastify) {
       const result = await api.details.parseDetails(request.query.id).catch(e => { throw e })
       reply.send(result)
     } catch (e) {
+      console.log(e)
       Sentry.captureException(e)
       reply.code(500).send()
     }
@@ -27,6 +28,7 @@ async function routes (fastify) {
       const result = await api.film.getPlayer({ id, translator_id } = request.query)
       reply.send(result)
     } catch (e) {
+      console.log(e)
       Sentry.captureException(e)
       reply.code(500).send()
     }
@@ -36,6 +38,7 @@ async function routes (fastify) {
       const result = await api.serial.getInfo({ id } = request.query)
       reply.send(result)
     } catch (e) {
+      console.log(e)
       Sentry.captureException(e)
       reply.code(500).send()
     }
@@ -45,6 +48,7 @@ async function routes (fastify) {
       const result = await api.serial.getPlayer({ id, translator_id, episode, season } = request.query)
       reply.send(result)
     } catch (e) {
+      console.log(e)
       Sentry.captureException(e)
       reply.code(500).send()
     }
@@ -54,6 +58,7 @@ async function routes (fastify) {
       const result = await api.serial.getEpisodes({ id, translator_id } = request.query)
       reply.send(result)
     } catch (e) {
+      console.log(e)
       Sentry.captureException(e)
       reply.code(500).send()
     }
@@ -63,6 +68,7 @@ async function routes (fastify) {
       const result = await api.details.search(request.query.q)
       reply.send(result)
     } catch (e) {
+      console.log(e)
       Sentry.captureException(e)
       reply.code(500).send()
     }

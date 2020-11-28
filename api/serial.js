@@ -27,14 +27,12 @@ async function parseEpisodes ($episodes, _callback) {
 }
 
 async function getInfo ({ id }, _callback) {
-  return new Promise(async (resolve, reject) => {
-    const response = await http.HDRezkaClient.get(`${id}-.html`).catch(e => { throw e })
-    const $body = $(response.body)
+  const response = await http.HDRezkaClient.get(`${id}-.html`).catch(e => { throw e })
+  const $body = $(response.body)
 
-    resolve({
-      translators: await prepareTranslators($body).catch(e => { throw e })
-    })
-  })
+  return {
+    translators: await prepareTranslators($body).catch(e => { throw e })
+  }
 }
 
 function prepareTranslators ($body) {
@@ -49,69 +47,62 @@ function prepareTranslators ($body) {
   return Promise.resolve(translators)
 }
 
-function getPlayer ({ id, translator_id, episode, season }) {
-  return new Promise(async (resolve, reject) => {
-    const data = {
-      id: parseInt(id),
-      translator_id: parseInt(translator_id),
-      action: 'get_stream',
-      episode: parseInt(episode),
-      season: parseInt(season)
-    }
-    const formData = new FormData()
-    Object.entries(data).forEach(item => {
-      formData.append(item[0], item[1])
-    })
-    const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
-      body: formData,
-      responseType: 'json'
-    }).catch(e => { throw e })
-    if (!response.body.success) {
-      return reject(response.body.message)
-    }
-
-    resolve({
-      uri: parseUri(response.body['url'])
-    })
+async function getPlayer ({ id, translator_id, episode, season }) {
+  const data = {
+    id: parseInt(id),
+    translator_id: parseInt(translator_id),
+    action: 'get_stream',
+    episode: parseInt(episode),
+    season: parseInt(season)
+  }
+  const formData = new FormData()
+  Object.entries(data).forEach(item => {
+    formData.append(item[0], item[1])
   })
+  const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
+    body: formData,
+    responseType: 'json'
+  }).catch(e => { throw e })
+  if (!response.body.success) {
+    return reject(response.body.message)
+  }
+
+  return {
+    uri: parseUri(response.body['url'])
+  }
 }
 
-function getEpisodes ({ id, translator_id }) {
-  return new Promise(async (resolve, reject) => {
-    let seasons = []
-    let episodes = []
-    let media = []
+async function getEpisodes ({ id, translator_id }) {
+  let seasons = []
+  let episodes = []
 
-    const data = {
-      id: parseInt(id),
-      translator_id: parseInt(translator_id),
-      action: 'get_episodes'
-    }
-    const formData = new FormData()
-    Object.entries(data).forEach(item => {
-      formData.append(item[0], item[1])
-    })
-    const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
-      body: formData,
-      responseType: 'json'
-    }).catch(e => { throw e })
-    if (!response.body.success) {
-      return reject(response.body.message)
-    }
-    parseSeasons($(response.body['seasons']), (result) => {
-      seasons = result
-    })
-    parseEpisodes($(response.body['episodes']), (result) => {
-      episodes = result
-    })
-
-    media = {
-      seasons: seasons,
-      episodes: episodes
-    }
-
-    resolve(media)
+  const data = {
+    id: parseInt(id),
+    translator_id: parseInt(translator_id),
+    action: 'get_episodes'
+  }
+  const formData = new FormData()
+  Object.entries(data).forEach(item => {
+    formData.append(item[0], item[1])
   })
+  const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
+    body: formData,
+    responseType: 'json'
+  }).catch(e => { throw e })
+  if (!response.body.success) {
+    return reject(response.body.message)
+  }
+  parseSeasons($(response.body['seasons']), (result) => {
+    seasons = result
+  })
+  parseEpisodes($(response.body['episodes']), (result) => {
+    episodes = result
+  })
+
+  return {
+    seasons: seasons,
+    episodes: episodes
+  }
 }
 
 module.exports = {

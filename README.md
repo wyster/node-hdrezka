@@ -1,21 +1,21 @@
 Serial player
 ```
-curl -X GET 'http://localhost:8080/serial/player?id=78&translator_id=82&episode=12&season=1'
+curl -i -X GET 'http://localhost:8080/serial/player?id=78&translator_id=82&episode=12&season=1'
 ```
 
 Serial episodes for translation
 ```
-curl -X GET 'http://localhost:8080/serial/episodes?id=78&translator_id=82'
+curl -i -X GET 'http://localhost:8080/serial/episodes?id=78&translator_id=82'
 ```
 
 Serial info
 ```
-curl -X GET 'http://localhost:8080/serial?id=78'
+curl -i -X GET 'http://localhost:8080/serial?id=78'
 ```
 
 Film or serial info
 ```
-curl -X GET 'http://localhost:8080/details?id=78'
+curl -i -X GET 'http://localhost:8080/details?id=78'
 ```
 
 Film player
