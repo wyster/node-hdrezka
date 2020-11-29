@@ -8,7 +8,7 @@ async function parseSeasons ($seasons, _callback) {
   $seasons.each((_, season) => {
     seasons.push({
       title: $(season).text(),
-      id: $(season).attr('data-tab_id')
+      id: parseInt($(season).attr('data-tab_id'))
     })
   })
   _callback(seasons)
@@ -19,8 +19,8 @@ async function parseEpisodes ($episodes, _callback) {
   $episodes.children().each((_, episodes_info) => {
     episodes.push({
       title: $(episodes_info).text(),
-      episode: $(episodes_info).attr('data-episode_id'),
-      season: $(episodes_info).attr('data-season_id')
+      episode: parseInt($(episodes_info).attr('data-episode_id')),
+      season: parseInt($(episodes_info).attr('data-season_id'))
     })
   })
   _callback(episodes)
@@ -40,7 +40,7 @@ function prepareTranslators ($body) {
   $('#translators-list', $body).children().each((_, translators_info) =>
     translators.push({
       title: $(translators_info).text(),
-      id: $(translators_info).attr('data-translator_id'),
+      id: parseInt($(translators_info).attr('data-translator_id')),
       uri: $(translators_info).attr('data-cdn_url')
     })
   )
