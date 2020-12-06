@@ -99,7 +99,8 @@ async function parseDetails (id) {
     description: description,
     translators: translators,
     isSerial: isSerial,
-    playerUri: playerUri
+    playerUri: playerUri,
+    name: $(response.body).find('.b-post__title').text().trim()
   }
 }
 
