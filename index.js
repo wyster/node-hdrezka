@@ -7,6 +7,6 @@ config.load()
 fastify.register(require('fastify-cors'))
 fastify.register(require("./routes"))
 
-fastify.listen(process.env.PORT || 80, (err, address) => {
+fastify.listen(process.env.PORT || 80, '0.0.0.0', (err, address) => {
     if (err) throw err
 })
