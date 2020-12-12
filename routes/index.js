@@ -40,9 +40,9 @@ async function routes (fastify) {
       reply.send();
     }
   })
-  fastify.get('/serial', async (request, reply) => {
+  fastify.get('/movie/:id([1-9]+)', async (request, reply) => {
     try {
-      const result = await api.serial.getInfo({ id } = request.query)
+      const result = await api.serial.getInfo({ id } = request.params)
       reply.send(result)
     } catch (e) {
       handleException(e, reply)

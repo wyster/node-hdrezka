@@ -10,7 +10,7 @@ curl -i -X GET 'http://localhost:8080/serial/episodes?id=78&translator_id=82'
 
 Serial info
 ```
-curl -i -X GET 'http://localhost:8080/serial?id=78'
+curl -i -X GET 'http://localhost:8080/movie/78'
 ```
 
 Film or serial info
