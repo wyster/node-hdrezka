@@ -1,7 +1,7 @@
 const http = require('../utils/http')
 const $ = require('cheerio')
-const player = require('./player')
 const FormData = require('form-data')
+const { getIdFromUrl } = require('../utils/helper')
 
 async function parseDetails (id) {
   let details = {}
@@ -117,14 +117,15 @@ async function search (q) {
   $('.b-search__section_list', $body).children().each((_, item) => {
     const $item = $(item)
     const link = $item.find('a').attr('href')
+    const id = getIdFromUrl(link)
     const title = $item.find('a .enty').text()
     results.push({
-      link,
+      id,
       title
     })
   })
 
-  return results;
+  return results
 }
 
 module.exports = {
