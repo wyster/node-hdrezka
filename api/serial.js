@@ -27,7 +27,7 @@ async function parseEpisodes ($episodes, _callback) {
 }
 
 async function getInfo ({ id }, _callback) {
-  const response = await http.HDRezkaClient.get(`${id}-.html`).catch(e => { throw e })
+  const response = await http.HDRezkaClient.get(`${id}-page.html`).catch(e => { throw e })
   const $body = $(response.body)
 
   return {
