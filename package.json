@@ -18,7 +18,8 @@
     "fastify": "^3.8.0",
     "fastify-cors": "^5.0.0",
     "form-data": "^3.0.0",
-    "got": "^11.8.0"
+    "got": "^11.8.0",
+    "hpagent": "^0.1.2"
   },
   "engines": {
     "node": ">=12"

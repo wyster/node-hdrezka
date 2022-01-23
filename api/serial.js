@@ -1,7 +1,8 @@
-const http = require('../utils/http')
+const { HttpsProxyAgent } = require('hpagent');
 const $ = require('cheerio')
-const { parseUri, buildUrlToPageById } = require('../utils/helper')
 const FormData = require('form-data')
+const http = require('../utils/http')
+const { parseUri, buildUrlToPageById } = require('../utils/helper')
 
 async function parseSeasons ($seasons, _callback) {
   let seasons = []
@@ -59,10 +60,19 @@ async function getPlayer ({ id, translator_id, episode, season }) {
   Object.entries(data).forEach(item => {
     formData.append(item[0], item[1])
   })
-  const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, {
+  const params = {
     body: formData,
     responseType: 'json'
-  }).catch(e => { throw e })
+  }
+  const proxy = process.env.PROXY;
+  if (proxy) {
+    params.agent = {
+      https: new HttpsProxyAgent({
+        proxy
+      })
+    }
+  }
+  const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, params).catch(e => { throw e })
   if (!response.body.success) {
     throw new Error(response.body.message);
   }
