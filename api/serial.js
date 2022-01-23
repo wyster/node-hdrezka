@@ -1,6 +1,6 @@
 const http = require('../utils/http')
 const $ = require('cheerio')
-const { parseUri } = require('../utils/helper')
+const { parseUri, buildUrlToPageById } = require('../utils/helper')
 const FormData = require('form-data')
 
 async function parseSeasons ($seasons, _callback) {
@@ -27,7 +27,7 @@ async function parseEpisodes ($episodes, _callback) {
 }
 
 async function getInfo ({ id }, _callback) {
-  const response = await http.HDRezkaClient.get(`${id}-page.html`).catch(e => { throw e })
+  const response = await http.HDRezkaClient.get(buildUrlToPageById(id)).catch(e => { throw e })
   const $body = $(response.body)
 
   return {

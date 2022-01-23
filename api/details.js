@@ -1,7 +1,7 @@
 const http = require('../utils/http')
 const $ = require('cheerio')
 const FormData = require('form-data')
-const { getIdFromUrl } = require('../utils/helper')
+const { getIdFromUrl, buildUrlToPageById } = require('../utils/helper')
 
 async function parseDetails (id) {
   let details = {}
@@ -18,7 +18,7 @@ async function parseDetails (id) {
   let playerUri = null
   let isSerial = false
 
-  const response = await http.HDRezkaClient.get(`${id}-.html`).catch(e => { throw e})
+  const response = await http.HDRezkaClient.get(buildUrlToPageById(id)).catch(e => { throw e})
 
   $(response.body).find('table.b-post__info tbody').children().each((_, post_info) => {
     let info_key = $(post_info).find('td.l h2').text()
