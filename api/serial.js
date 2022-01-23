@@ -67,6 +67,10 @@ async function getPlayer ({ id, translator_id, episode, season }) {
     throw new Error(response.body.message);
   }
 
+  if (typeof response.body['url'] !== 'string') {
+    throw new Error('url is not string');
+  }
+
   return {
     uri: parseUri(response.body['url'])
   }
