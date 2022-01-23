@@ -10,7 +10,7 @@ async function getPlayer ({ id, translator_id }) {
 
   const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, { body: formData, responseType: 'json' }).catch(e => { throw e})
   if (!response.body.success) {
-    return reject(response.body.message)
+    throw new Error(response.body.message)
   }
 
   return {

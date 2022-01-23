@@ -53,7 +53,7 @@ async function getPlayer ({ id, translator_id, episode, season }) {
     translator_id: parseInt(translator_id),
     action: 'get_stream',
     episode: parseInt(episode),
-    season: parseInt(season)
+    season: parseInt(season),
   }
   const formData = new FormData()
   Object.entries(data).forEach(item => {
@@ -64,7 +64,7 @@ async function getPlayer ({ id, translator_id, episode, season }) {
     responseType: 'json'
   }).catch(e => { throw e })
   if (!response.body.success) {
-    return reject(response.body.message)
+    throw new Error(response.body.message);
   }
 
   return {
@@ -90,7 +90,7 @@ async function getEpisodes ({ id, translator_id }) {
     responseType: 'json'
   }).catch(e => { throw e })
   if (!response.body.success) {
-    return reject(response.body.message)
+    throw new Error(response.body.message)
   }
   parseSeasons($(response.body['seasons']), (result) => {
     seasons = result
