@@ -66,11 +66,11 @@ async function getPlayer ({ id, translator_id, episode, season }) {
   }
   const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, params).catch(e => { throw e })
   if (!response.body.success) {
-    throw new Error(response.body.message);
+    throw new Error(`not success response from hdrezka: ${JSON.stringify(response.body)}`);
   }
 
   if (typeof response.body['url'] !== 'string') {
-    throw new Error('url is not string, response: ' + JSON.stringify(response.body));
+    throw new Error(`url is not string, response: ${JSON.stringify(response.body)}`);
   }
 
   return {

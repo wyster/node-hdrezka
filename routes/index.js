@@ -54,9 +54,8 @@ async function routes (fastify) {
       const result = await api.serial.getPlayer({ id, translator_id, episode, season } = request.query)
       reply.send(result)
     } catch (e) {
-      console.log(e)
-      Sentry.captureException(e)
-      reply.code(500).send()
+      handleException(e, reply)
+      reply.send();
     }
   })
   fastify.get('/serial/episodes', async (request, reply) => {
