@@ -64,14 +64,6 @@ async function getPlayer ({ id, translator_id, episode, season }) {
     body: formData,
     responseType: 'json'
   }
-  const proxy = process.env.PROXY;
-  if (proxy) {
-    params.agent = {
-      https: new HttpsProxyAgent({
-        proxy
-      })
-    }
-  }
   const response = await http.HDRezkaClient.post(`ajax/get_cdn_series/?t=${Date.now()}`, params).catch(e => { throw e })
   if (!response.body.success) {
     throw new Error(response.body.message);
