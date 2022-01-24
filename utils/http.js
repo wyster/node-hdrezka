@@ -6,7 +6,7 @@ const HDRezkaClient = got.extend({
     'User-Agent': process.env.HTTP_HEADERS,
     'Referer': process.env.HTTP_HDREZKA_HOST
   },
-  timeout: 5 * 1000,
+  timeout: 10 * 1000,
   https: { rejectUnauthorized: false }
 })
 
