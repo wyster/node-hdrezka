@@ -13,7 +13,7 @@
     "@sentry/tracing": "^5.30.0",
     "atob": "^2.1.2",
     "btoa": "^1.2.1",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0-rc.3",
     "fastify": "^3.29.5",
     "fastify-cors": "^5.2.0",
     "form-data": "^3.0.1",
