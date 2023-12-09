@@ -11,7 +11,7 @@ function decodeUri (uri) {
   };
 
   var a;
-  a = uri.substr(2);
+  a = uri.substring(2);
   for (var i = 4; i > -1; i--) {
     if (v["bk" + i] && v["bk" + i] !== '') {
       a = a.replace(v.file3_separator + b1(v["bk" + i]), "");
