@@ -44,6 +44,9 @@ function decodeUri (uri) {
 }
 
 function parseUri (uri) {
+  if (typeof uri !== 'string') {
+    throw new Error('Uri is not has string type');
+  }
   const regexp = /\[(.*?)](.*?) or (.*?)(?:,|$)/gm
 
   const matches = [...decodeUri(uri).matchAll(regexp)]
