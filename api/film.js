@@ -1,6 +1,7 @@
 const http = require('../utils/http')
 const { parseUri } = require('../utils/helper')
 const FormData = require('form-data')
+const {configureScope} = require("@sentry/node");
 
 async function getPlayer ({ id, translator_id }) {
   const formData = new FormData();
@@ -12,6 +13,10 @@ async function getPlayer ({ id, translator_id }) {
   if (!response.body.success) {
     throw new Error(response.body.message)
   }
+
+  configureScope((scope) => {
+    scope.setExtra('response', JSON.stringify(response.body));
+  });
 
   return {
     uri: parseUri(response.body['url'])

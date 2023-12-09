@@ -3,6 +3,7 @@ const $ = require('cheerio')
 const FormData = require('form-data')
 const http = require('../utils/http')
 const { parseUri, buildUrlToPageById } = require('../utils/helper')
+const {configureScope} = require("@sentry/node");
 
 async function parseSeasons ($seasons, _callback) {
   let seasons = []
@@ -72,6 +73,10 @@ async function getPlayer ({ id, translator_id, episode, season }) {
   if (typeof response.body['url'] !== 'string') {
     throw new Error(`url is not string, response: ${JSON.stringify(response.body)}`);
   }
+
+  configureScope((scope) => {
+    scope.setExtra('response', JSON.stringify(response.body));
+  });
 
   return {
     uri: parseUri(response.body['url'])
